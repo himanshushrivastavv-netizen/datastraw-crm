@@ -9,8 +9,7 @@
 <body class="bg-slate-950 text-slate-100 min-h-screen">
     <div class="max-w-7xl mx-auto px-4 py-6">
         
-        <!-- Header -->
-        <header class="flex justify-between items-center mb-8 bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+        <header class="flex justify-between items-center mb-8 bg-slate-900 p-4 rounded-xl border border-slate-800">
             <div class="flex items-center space-x-3">
                 <div class="bg-indigo-600 p-2.5 rounded-xl">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
@@ -26,26 +25,24 @@
             </span>
         </header>
 
-        <!-- New Ticket Form -->
-        <section class="mb-8 bg-slate-900/50 p-6 rounded-2xl border border-slate-800">
+        <section class="mb-8 bg-slate-900 p-6 rounded-2xl border border-slate-800">
             <h2 class="text-lg font-semibold mb-4">Create New Ticket</h2>
             <form id="createTicketForm" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" id="custName" placeholder="Customer Full Name" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
-                    <input type="email" id="custEmail" placeholder="Customer Email Address" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+                    <input type="text" id="custName" placeholder="Customer Full Name" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm">
+                    <input type="email" id="custEmail" placeholder="Customer Email Address" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm">
                 </div>
-                <input type="text" id="ticketSubject" placeholder="Brief issue summary" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
-                <textarea id="ticketDesc" rows="3" placeholder="Describe the problem in detail..." required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500"></textarea>
+                <input type="text" id="ticketSubject" placeholder="Brief issue summary" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm">
+                <textarea id="ticketDesc" rows="3" placeholder="Describe the problem in detail..." required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2.5 text-sm"></textarea>
                 <div class="flex justify-end">
-                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2.5 rounded-xl transition text-sm">Submit Ticket</button>
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2.5 rounded-xl text-sm">Submit Ticket</button>
                 </div>
             </form>
         </section>
 
-        <!-- Filters & Search -->
         <section class="flex flex-col sm:flex-row gap-4 justify-between items-center mb-6">
-            <input type="text" id="searchInput" onkeyup="fetchTickets()" placeholder="Search ID, Name, Email..." class="w-full sm:w-80 bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
-            <select id="statusFilter" onchange="fetchTickets()" class="w-full sm:w-auto bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+            <input type="text" id="searchInput" onkeyup="fetchTickets()" placeholder="Search ID, Name, Email..." class="w-full sm:w-80 bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-sm">
+            <select id="statusFilter" onchange="fetchTickets()" class="w-full sm:w-auto bg-slate-900 border border-slate-800 rounded-xl px-4 py-2 text-sm">
                 <option value="All">Filter Status: All</option>
                 <option value="Open">Open</option>
                 <option value="In Progress">In Progress</option>
@@ -53,10 +50,9 @@
             </select>
         </section>
 
-        <!-- Tickets Table -->
-        <div class="bg-slate-900/50 border border-slate-800 rounded-2xl overflow-hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
             <table class="w-full text-left border-collapse">
-                <thead class="bg-slate-900 text-slate-400 text-xs uppercase border-b border-slate-800">
+                <thead class="bg-slate-950 text-slate-400 text-xs uppercase border-b border-slate-800">
                     <tr>
                         <th class="p-4">Ticket ID</th>
                         <th class="p-4">Customer</th>
@@ -65,14 +61,12 @@
                         <th class="p-4 text-right">Action</th>
                     </tr>
                 </thead>
-                <tbody id="ticketsTableBody" class="divide-y divide-slate-800/50 text-sm">
-                    <!-- Rows dynamically generated -->
-                </tbody>
+                <tbody id="ticketsTableBody" class="divide-y divide-slate-800 text-sm"></tbody>
             </table>
         </div>
     </div>
 
-    <!-- Manage Ticket Modal -->
+    <!-- Manage Modal -->
     <div id="manageModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3">
@@ -82,7 +76,7 @@
             <div id="modalDetails" class="text-xs text-slate-300 space-y-2 bg-slate-950 p-3 rounded-xl"></div>
             <div>
                 <label class="block text-xs font-medium text-slate-400 mb-1">Update Status</label>
-                <select id="updateStatusSelect" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200">
+                <select id="updateStatusSelect" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm">
                     <option value="Open">Open</option>
                     <option value="In Progress">In Progress</option>
                     <option value="Closed">Closed</option>
@@ -90,17 +84,13 @@
             </div>
             <div>
                 <label class="block text-xs font-medium text-slate-400 mb-1">Add Note</label>
-                <textarea id="updateNoteText" rows="2" placeholder="Internal notes..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200"></textarea>
+                <textarea id="updateNoteText" rows="2" placeholder="Internal notes..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm"></textarea>
             </div>
-            
             <div id="notesHistory" class="space-y-1 max-h-32 overflow-y-auto text-xs border-t border-slate-800 pt-2"></div>
-
             <div class="flex justify-between items-center pt-2 border-t border-slate-800">
-                <button type="button" onclick="deleteCurrentTicket()" class="bg-red-600/20 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white px-4 py-2 rounded-xl text-xs font-medium transition">
-                    Delete Ticket
-                </button>
+                <button type="button" onclick="deleteCurrentTicket()" class="bg-red-600 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-red-700">Delete Ticket</button>
                 <div class="space-x-2">
-                    <button type="button" onclick="closeModal()" class="px-4 py-2 text-xs text-slate-400 hover:text-white">Cancel</button>
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 text-xs text-slate-400">Cancel</button>
                     <button type="button" onclick="saveTicketChanges()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-medium">Save Changes</button>
                 </div>
             </div>
@@ -113,28 +103,21 @@
         async function fetchTickets() {
             const search = document.getElementById('searchInput').value;
             const status = document.getElementById('statusFilter').value;
-            let url = `/api/tickets?status=${status}`;
-            if(search) url += `&search=${encodeURIComponent(search)}`;
-
-            const res = await fetch(url);
+            const res = await fetch(`/api/tickets?status=${status}&search=${encodeURIComponent(search)}`);
             const tickets = await res.json();
             const tbody = document.getElementById('ticketsTableBody');
             tbody.innerHTML = '';
 
             tickets.forEach(t => {
-                let badgeClass = 'bg-sky-500/10 text-sky-400 border-sky-500/20';
-                if(t.status === 'Open') badgeClass = 'bg-amber-500/10 text-amber-400 border-amber-500/20';
-                if(t.status === 'Closed') badgeClass = 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
-
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-900/80 transition">
                         <td class="p-4 font-mono font-bold text-indigo-400">${t.ticket_id}</td>
                         <td class="p-4"><div class="font-medium">${t.customer_name}</div><div class="text-xs text-slate-500">${t.customer_email}</div></td>
                         <td class="p-4 text-slate-300">${t.subject}</td>
-                        <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs border ${badgeClass}">${t.status}</span></td>
+                        <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs border bg-slate-800 border-slate-700">${t.status}</span></td>
                         <td class="p-4 text-right space-x-2">
                             <button onclick="openModal('${t.ticket_id}')" class="bg-slate-800 hover:bg-slate-700 text-xs px-3 py-1.5 rounded-lg border border-slate-700">Manage</button>
-                            <button onclick="quickDelete('${t.ticket_id}')" class="bg-red-500/10 hover:bg-red-600 text-red-400 hover:text-white text-xs px-2.5 py-1.5 rounded-lg border border-red-500/20 transition">🗑️</button>
+                            <button onclick="quickDelete('${t.ticket_id}')" class="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1.5 rounded-lg font-bold">DELETE</button>
                         </td>
                     </tr>
                 `;
@@ -143,16 +126,15 @@
 
         document.getElementById('createTicketForm').onsubmit = async (e) => {
             e.preventDefault();
-            const payload = {
-                customer_name: document.getElementById('custName').value,
-                customer_email: document.getElementById('custEmail').value,
-                subject: document.getElementById('ticketSubject').value,
-                description: document.getElementById('ticketDesc').value
-            };
             await fetch('/api/tickets', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(payload)
+                body: JSON.stringify({
+                    customer_name: document.getElementById('custName').value,
+                    customer_email: document.getElementById('custEmail').value,
+                    subject: document.getElementById('ticketSubject').value,
+                    description: document.getElementById('ticketDesc').value
+                })
             });
             document.getElementById('createTicketForm').reset();
             fetchTickets();
@@ -162,25 +144,14 @@
             currentTicketId = id;
             const res = await fetch(`/api/tickets/${id}`);
             const data = await res.json();
-            
             document.getElementById('modalTitle').innerText = `Manage ${data.ticket_id}`;
-            document.getElementById('modalDetails').innerHTML = `
-                <div><strong>Customer:</strong> ${data.customer_name} (${data.customer_email})</div>
-                <div><strong>Subject:</strong> ${data.subject}</div>
-                <div><strong>Description:</strong> ${data.description}</div>
-            `;
+            document.getElementById('modalDetails').innerHTML = `<div><b>Customer:</b> ${data.customer_name}</div><div><b>Subject:</b> ${data.subject}</div>`;
             document.getElementById('updateStatusSelect').value = data.status;
             document.getElementById('updateNoteText').value = '';
 
             const history = document.getElementById('notesHistory');
-            history.innerHTML = '<strong class="text-slate-400">Notes History:</strong>';
-            if(data.notes && data.notes.length > 0) {
-                data.notes.forEach(n => {
-                    history.innerHTML += `<div class="text-slate-400 border-l-2 border-indigo-500 pl-2 my-1">${n.note_text} <span class="text-[10px] text-slate-600">(${n.created_at})</span></div>`;
-                });
-            } else {
-                history.innerHTML += '<div class="text-slate-600 italic">No notes yet.</div>';
-            }
+            history.innerHTML = '<strong>Notes:</strong>';
+            if(data.notes) data.notes.forEach(n => history.innerHTML += `<div>- ${n.note_text}</div>`);
 
             document.getElementById('manageModal').classList.remove('hidden');
             document.getElementById('manageModal').classList.add('flex');
@@ -192,27 +163,27 @@
         }
 
         async function saveTicketChanges() {
-            const status = document.getElementById('updateStatusSelect').value;
-            const note = document.getElementById('updateNoteText').value;
-
             await fetch(`/api/tickets/${currentTicketId}`, {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({status, note})
+                body: JSON.stringify({
+                    status: document.getElementById('updateStatusSelect').value,
+                    note: document.getElementById('updateNoteText').value
+                })
             });
             closeModal();
             fetchTickets();
         }
 
         async function deleteCurrentTicket() {
-            if(!confirm(`Are you sure you want to delete ${currentTicketId}?`)) return;
+            if(!confirm(`Delete ticket ${currentTicketId}?`)) return;
             await fetch(`/api/tickets/${currentTicketId}`, { method: 'DELETE' });
             closeModal();
             fetchTickets();
         }
 
         async function quickDelete(id) {
-            if(!confirm(`Are you sure you want to delete ${id}?`)) return;
+            if(!confirm(`Delete ticket ${id}?`)) return;
             await fetch(`/api/tickets/${id}`, { method: 'DELETE' });
             fetchTickets();
         }

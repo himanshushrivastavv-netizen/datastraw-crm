@@ -1,14 +1,12 @@
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import sqlite3
 from typing import Optional
-from datetime import datetime
 
 app = FastAPI()
 
-# Database Setup
 def get_db_connection():
     conn = sqlite3.connect("crm.db")
     conn.row_factory = sqlite3.Row
@@ -35,8 +33,7 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             ticket_id TEXT NOT NULL,
             note_text TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (ticket_id) REFERENCES tickets (ticket_id)
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
     conn.commit()
@@ -44,7 +41,6 @@ def init_db():
 
 init_db()
 
-# Models
 class TicketCreate(BaseModel):
     customer_name: str
     customer_email: str
@@ -55,7 +51,6 @@ class TicketUpdate(BaseModel):
     status: str
     note: Optional[str] = None
 
-# API Endpoints
 @app.post("/api/tickets")
 def create_ticket(ticket: TicketCreate):
     conn = get_db_connection()
@@ -70,7 +65,7 @@ def create_ticket(ticket: TicketCreate):
     )
     conn.commit()
     conn.close()
-    return {"ticket_id": ticket_id, "status": "Open", "message": "Ticket created successfully"}
+    return {"ticket_id": ticket_id, "status": "Open"}
 
 @app.get("/api/tickets")
 def get_tickets(status: Optional[str] = None, search: Optional[str] = None):
@@ -102,37 +97,27 @@ def get_ticket_detail(ticket_id: str):
     ticket = cursor.fetchone()
     if not ticket:
         conn.close()
-        raise HTTPException(status_code=404, detail="Ticket not found")
+        raise HTTPException(status_code=404, detail="Not found")
     
     cursor.execute("SELECT * FROM notes WHERE ticket_id = ? ORDER BY created_at DESC", (ticket_id,))
     notes = [dict(row) for row in cursor.fetchall()]
     conn.close()
     
-    result = dict(ticket)
-    result["notes"] = notes
-    return result
+    res = dict(ticket)
+    res["notes"] = notes
+    return res
 
 @app.put("/api/tickets/{ticket_id}")
 def update_ticket(ticket_id: str, update_data: TicketUpdate):
     conn = get_db_connection()
     cursor = conn.cursor()
-    
-    cursor.execute(
-        "UPDATE tickets SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE ticket_id = ?",
-        (update_data.status, ticket_id)
-    )
-    
+    cursor.execute("UPDATE tickets SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE ticket_id = ?", (update_data.status, ticket_id))
     if update_data.note and update_data.note.strip():
-        cursor.execute(
-            "INSERT INTO notes (ticket_id, note_text) VALUES (?, ?)",
-            (ticket_id, update_data.note.strip())
-        )
-        
+        cursor.execute("INSERT INTO notes (ticket_id, note_text) VALUES (?, ?)", (ticket_id, update_data.note.strip()))
     conn.commit()
     conn.close()
-    return {"success": True, "message": "Ticket updated successfully"}
+    return {"success": True}
 
-# DELETE Endpoint
 @app.delete("/api/tickets/{ticket_id}")
 def delete_ticket(ticket_id: str):
     conn = get_db_connection()
@@ -141,9 +126,8 @@ def delete_ticket(ticket_id: str):
     cursor.execute("DELETE FROM notes WHERE ticket_id = ?", (ticket_id,))
     conn.commit()
     conn.close()
-    return {"success": True, "message": "Ticket deleted successfully"}
+    return {"success": True}
 
-# Serve Frontend
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
