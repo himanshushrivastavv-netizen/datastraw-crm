@@ -202,3 +202,6 @@ def update_ticket(ticket_id: str, data: TicketUpdate):
     conn.commit()
     conn.close()
     return {"success": True, "updated_at": now}
+from mangum import Mangum
+
+handler = Mangum(app)
