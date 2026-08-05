@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . /app
 
-RUN pip install --no-cache-dir fastapi uvicorn pydantic mangum
+RUN pip install --no-cache-dir fastapi uvicorn pydantic
 
 EXPOSE 8000
 
