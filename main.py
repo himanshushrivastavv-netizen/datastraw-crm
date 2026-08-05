@@ -1,8 +1,8 @@
 from fastapi import FastAPI, HTTPException
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 import sqlite3
+import os
 from typing import Optional
 
 app = FastAPI()
@@ -128,8 +128,13 @@ def delete_ticket(ticket_id: str):
     conn.close()
     return {"success": True}
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
-
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 def read_index():
-    return FileResponse("static/index.html")
+    file_path = os.path.join("static", "index.html")
+    if os.path.exists(file_path):
+        with open(file_path, "r", encoding="utf-8") as f:
+            return f.read()
+    elif os.path.exists("index.html"):
+        with open("index.html", "r", encoding="utf-8") as f:
+            return f.read()
+    return "<h1>CRM App Running</h1>"
