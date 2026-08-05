@@ -17,7 +17,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Global in-memory DB connection for Serverless
+# In-memory DB for Vercel Serverless
 conn = sqlite3.connect(":memory:", check_same_thread=False)
 
 def init_db():
